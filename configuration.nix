@@ -153,6 +153,16 @@ in
     mangohud
     schedtool
     xorg.xf86videoamdgpu
+    (srb2kart.overrideAttrs (old: {
+      src = fetchFromGitHub {
+        owner = "STJr";
+        repo = "Kart-Public";
+        rev = "v1.6";
+        sha256 = "sha256-5sIHdeenWZjczyYM2q+F8Y1SyLqL+y77yxYDUM3dVA0=";
+      };
+    }))
+    obs-studio
+    prismlauncher
   ];
 
   # Kernel (default: LTS)
@@ -161,7 +171,7 @@ in
   boot.kernelPackages = pkgs.linuxPackages_xanmod_latest;
   #boot.kernelPackages = pkgs.linuxPackages_zen;
 
-  # Browser defaults
+  # default applications
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [
@@ -203,6 +213,7 @@ in
   environment.variables = {
     DOCKER_HOST = "unix://$XDG_RUNTIME_DIR/docker.sock";
     GTK_THEME = "Adwaita:dark";
+    AMD_VULKAN_ICD = "RADV";
   };
 
   # Pipewire
@@ -317,7 +328,7 @@ in
   # Steam
   programs.steam.enable = true;
   programs.steam.package = pkgs_unstable.steam.override {
-    runtimeOnly = true;
+    # runtimeOnly = true;
     extraPkgs = pkgs: [ pkgs.gvfs ];
     extraLibraries = pkgs:
       [ pkgs.elfutils ] ++
@@ -362,7 +373,6 @@ in
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
-
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
