@@ -174,8 +174,9 @@ in
       ];
     })
     prismlauncher
-    # tetrio-desktop
+    tetrio-desktop
     nodejs_20
+    cmus
   ];
 
   fonts.fonts = with pkgs ;[
