@@ -13,7 +13,7 @@ let
   ];
 in
 {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs_unstable; [
     glxinfo
     (bwrap.bwrapIt {
       name = "lutris";
@@ -31,7 +31,7 @@ in
             gl.package32
           ] ++ gl.extraPackages ++ gl.extraPackages32;
       });
-      dri = true; # required for vulkan
+      dev = true; # required for vulkan
       # tmp = true;
       net = true;
       xdg = true;
