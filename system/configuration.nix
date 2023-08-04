@@ -177,6 +177,7 @@ in
     tetrio-desktop
     nodejs_20
     cmus
+    ffmpeg
   ];
 
   fonts.fonts = with pkgs ;[
@@ -303,8 +304,10 @@ in
     enable = true;
     openFirewall = lib.mkForce false;
     startWhenNeeded = true;
-    passwordAuthentication = lib.mkForce false;
-    permitRootLogin = lib.mkForce "no";
+    settings = {
+      PasswordAuthentication = lib.mkForce false;
+      PermitRootLogin = lib.mkForce "no";
+    };
   };
   programs.gnupg.agent = {
     enable = true;
