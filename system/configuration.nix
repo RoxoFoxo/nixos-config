@@ -127,6 +127,7 @@ in
     #neovim
     pkgs_unstable.elixir
     pkgs_unstable.elixir_ls
+    pkgs_unstable.inotify-tools
     tree-sitter
     gcc
     ripgrep
