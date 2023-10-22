@@ -4,16 +4,13 @@
 
 { config, lib, pkgs, pkgs_unstable, ... }:
 
-let
-  bwrap = import ./bwrap_shenanigans.nix { inherit lib pkgs; };
-in
 {
   imports =
     [
       # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./neovim/neovim.nix
-      ./lutris.nix
+      ./bwrap.nix
     ];
 
   # Bootloader.
@@ -83,24 +80,6 @@ in
   environment.systemPackages = with pkgs; [
     kitty
     firefox
-    (bwrap.bwrapIt {
-      name = "discord";
-      # Needs to be the same version of 
-      # nix path-info $(which firefox) -r | grep nss-
-      package = pkgs_unstable.discord-canary;
-      exec = "bin/discordcanary";
-      net = true;
-      dri = true;
-      tmp = true;
-      binds = [
-        "~/"
-      ];
-      custom_config = [
-        # FIXES: "interface 'wl_output' has no event 4"
-        # Needs discord to realease with a new electron version
-        "--unsetenv NIXOS_OZONE_WL"
-      ];
-    })
     pkgs_unstable.tdesktop
     cinnamon.nemo
     pkgs_unstable.cinnamon.nemo-fileroller
@@ -174,7 +153,6 @@ in
         wlrobs
       ];
     })
-    prismlauncher
     tetrio-desktop
     nodejs_20
     cmus
