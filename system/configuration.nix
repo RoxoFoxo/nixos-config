@@ -90,10 +90,10 @@
     glxinfo # glxgears
     vulkan-tools # vulkaninfo
     clinfo
-    rocm-smi
-    rocm-runtime
-    rocm-device-libs
-    rocminfo
+    rocmPackages.rocm-smi
+    rocmPackages.rocm-runtime
+    rocmPackages.rocm-device-libs
+    rocmPackages.rocminfo
     pavucontrol
     scrot
     git
@@ -146,20 +146,20 @@
     #    sha256 = "sha256-5sIHdeenWZjczyYM2q+F8Y1SyLqL+y77yxYDUM3dVA0=";
     #  };
     #}))
-    #obs-studio
-    # UNCOMMENT THIS WHEN U ARE READY TO TEST IT
     (wrapOBS {
       plugins = with pkgs.obs-studio-plugins; [
         wlrobs
+        obs-vkcapture
       ];
     })
     tetrio-desktop
     nodejs_20
     cmus
     ffmpeg
+    wev
   ];
 
-  fonts.fonts = with pkgs ;[
+  fonts.packages = with pkgs ;[
     nerdfonts
     corefonts
   ];
@@ -327,16 +327,18 @@
 
   # Steam
   programs.steam.enable = true;
-  programs.steam.package = pkgs_unstable.steam.override {
-    # runtimeOnly = true;
-    extraPkgs = pkgs: [ pkgs.gvfs ];
-    extraLibraries = pkgs:
-      [ pkgs.elfutils ] ++
+  programs.steam.package = pkgs_unstable.steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
+    extraLibraries = pkgs':
+      (extraLibraries pkgs') ++
+      [
+        pkgs'.elfutils
+        pkgs'.gperftools
+      ] ++
       # Fixes: dxvk::DxvkError
-      (with config.hardware.opengl; if pkgs.hostPlatform.is64bit
+      (with config.hardware.opengl; if pkgs'.hostPlatform.is64bit
       then [ package ] ++ extraPackages
       else [ package32 ] ++ extraPackages32);
-  };
+  });
 
   # Nautilus
   services.gnome.sushi.enable = true;

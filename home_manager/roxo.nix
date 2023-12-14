@@ -38,7 +38,7 @@
     # usefull to make xdg.portal... work
     # https://github.com/swaywm/sway/issues/5160#issuecomment-641173221
     # https://nixos.wiki/wiki/Sway#Systemd_integration
-    systemdIntegration = true;
+    systemd.enable = true;
     wrapperFeatures.gtk = true;
     xwayland = true;
     config = {
@@ -70,6 +70,7 @@
         { command = "${pkgs.swaybg}/bin/swaybg -i ~/.background-image -m fill"; }
         { command = "swaymsg 'output HDMI-A-1 position 0 0'"; always = true; }
         { command = "swaymsg 'output DP-1 position 1920 0'"; always = true; }
+        { command = "swaymsg 'output * adaptive_sync on'"; always = true; }
       ];
     };
   };
