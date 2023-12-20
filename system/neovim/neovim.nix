@@ -1,4 +1,4 @@
-{ lib, pkgs, pkgs_unstable, ... }:
+{ lib, pkgs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -24,13 +24,13 @@
             # THEME
             #
             # maybe change to Tomorrow Night (Bright) [the default of alacritty] ?
-            #vim-colortemplate
             #vim-code-dark
             kanagawa-nvim
             #
             # LSP
             #
             nvim-lspconfig
+            aerial-nvim
             #flutter-tools-nvim # sets up dartls + flutter utils
             #
             # COMPLETION
@@ -49,6 +49,7 @@
             # SYNTAX HIGHLIGHT
             #
             #(nvim-treesitter.withPlugins (plugins: tree-sitter.allGrammars))
+            # remove in nvim 0.10 ? (https://github.com/nvim-telescope/telescope.nvim/issues/2498)
             (nvim-treesitter.withPlugins (plugins: with plugins; [
               # common
               tree-sitter-markdown
@@ -72,6 +73,7 @@
               tree-sitter-dart
               tree-sitter-gdscript
               tree-sitter-godot-resource
+              tree-sitter-typst
               # web
               tree-sitter-svelte
               tree-sitter-javascript
@@ -92,23 +94,30 @@
               tree-sitter-graphql
             ]))
             kotlin-vim
+            typst-vim
             #nvim-treesitter-textobjects
             #
             # GIT
             #
             gitsigns-nvim
+            diffview-nvim
             #
             # NAVIGATION
             #
             nvim-tree-lua
             nvim-web-devicons
-            fzf-vim
+            fzf-lua
+            #plenary-nvim
+            #telescope-nvim
+            #telescope-fzf-native-nvim
+            #nvim-focus
             #
             # EXTRA
             #
             which-key-nvim
             ccc-nvim
-          ]; # manually loadable by calling `:packadd $plugin-name`
+          ];
+          # manually loadable by calling `:packadd $plugin-name`
           opt = [ ];
         };
       };

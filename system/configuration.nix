@@ -11,6 +11,7 @@
       ./hardware-configuration.nix
       ./neovim/neovim.nix
       ./bwrap.nix
+      ./game_performance.nix
     ];
 
   # Bootloader.
@@ -118,7 +119,7 @@
     rnix-lsp
     yt-dlp
     winetricks
-    protontricks
+    #protontricks
     #xorg.xkill
     chromium
     xclip
@@ -157,6 +158,8 @@
     cmus
     ffmpeg
     wev
+
+    xdg-utils
   ];
 
   fonts.packages = with pkgs ;[
@@ -180,6 +183,7 @@
       xdg-desktop-portal-gtk # GNOME
       #xdg-desktop-portal-kde # KDE
     ];
+    config.sway.default = lib.mkDefault [ "wlr" "gtk" ];
   };
   xdg.mime.defaultApplications = {
     "x-scheme-handler/http" = [
@@ -325,21 +329,6 @@
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];
 
-  # Steam
-  programs.steam.enable = true;
-  programs.steam.package = pkgs_unstable.steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
-    extraLibraries = pkgs':
-      (extraLibraries pkgs') ++
-      [
-        pkgs'.elfutils
-        pkgs'.gperftools
-      ] ++
-      # Fixes: dxvk::DxvkError
-      (with config.hardware.opengl; if pkgs'.hostPlatform.is64bit
-      then [ package ] ++ extraPackages
-      else [ package32 ] ++ extraPackages32);
-  });
-
   # Nautilus
   services.gnome.sushi.enable = true;
   services.gvfs.enable = true;
@@ -382,7 +371,11 @@
       automatic = true;
       persistent = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
+    };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
     };
   };
 
@@ -411,6 +404,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.05"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment?
 
 }

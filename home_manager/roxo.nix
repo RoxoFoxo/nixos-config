@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgs_unstable, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -75,5 +75,5 @@
     };
   };
 
-  home.stateVersion = "22.05";
+  home.stateVersion = "23.11";
 }

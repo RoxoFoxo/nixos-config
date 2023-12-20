@@ -29,8 +29,8 @@
     {
       nixosConfigurations.desktop = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit lib pkgs pkgs_unstable; };
-        specialArgs.channels = { inherit nixpkgs_stable nixpkgs_unstable; };
+        specialArgs = { inherit pkgs_unstable; };
+        lib = lib;
         modules = [
           ./system/configuration.nix
 

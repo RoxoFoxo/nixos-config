@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 let
   no_wayland_support_fix = [
@@ -10,45 +10,115 @@ let
     "--unsetenv SDL_AUDIODRIVER"
     "--unsetenv NIXOS_OZONE_WL"
   ];
+  steam_common = {
+    dev = true; # required for vulkan
+    net = true;
+    #tmp = true;
+    xdg = true; # if prefs.steam.vr_integration then true else "ro";
+    rwBinds =
+      [
+        "$HOME/.config/MangoHud/MangoHud.conf"
+        "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/steamapps/"
+      ];
+    extraConfig = no_wayland_support_fix ++ [
+      # Proton-GE
+      "--setenv STEAM_EXTRA_COMPAT_TOOLS_PATHS ${
+            pkgs.stdenv.mkDerivation rec {
+              pname = "proton-ge-custom";
+              version = "GE-Proton8-25";
+
+              src = pkgs.fetchurl {
+                url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/${version}.tar.gz";
+                sha256 = "sha256-s3FgsnqzbgBo9zqwmsDJNjI8+TTG827bFxzWQr184Yo=";
+              };
+
+              buildCommand = ''
+                mkdir -p $out
+                tar -C $out --strip=1 -x -f $src
+              '';
+            }
+          }"
+    ];
+  };
 in
 {
-  nixjail.bwrap.profiles =
-    [
-      {
-        packages = f: p: with p; { prismlauncher = prismlauncher; };
-        net = true;
-        dri = true;
-        rwBinds = [ "$HOME/Downloads" ];
-      }
-      {
-        packages = f: p: with p; { discord = p.discord.override { nss = p.nss_latest; }; };
-        net = true;
-        dri = true;
-        rwBinds = [ "$HOME" ];
-        autoBindHome = false;
-      }
-      {
-        packages = f: p: with p; {
-          lutris = lutris.override {
-            extraPkgs = pkgs: [ pkgs.openssl ];
-            # Fixes: dxvk::DxvkError
-            extraLibraries = pkgs:
-              let
-                gl = config.hardware.opengl;
-              in
-              [
-                pkgs.libjson # FIX: samba json errors
-                gl.package
-                gl.package32
-              ] ++ gl.extraPackages ++ gl.extraPackages32;
+  hardware.steam-hardware.enable = true;
+  nixjail.bwrap = {
+    defaultHomeDirRoot = "$HOME/bwrap/";
+    profiles =
+      [
+        {
+          packages = f: p: with p; { prismlauncher = prismlauncher; };
+          net = true;
+          dri = true;
+          rwBinds = [ "$HOME/Downloads" ];
+        }
+        {
+          packages = f: p: with p; { discord = p.discord.override { nss = p.nss_latest; }; };
+          net = true;
+          dri = true;
+          rwBinds = [ "$HOME" ];
+          autoBindHome = false;
+        }
+        {
+          packages = f: p: with p; {
+            lutris = lutris.override {
+              extraPkgs = pkgs: [ pkgs.openssl pkgs.wineWowPackages.waylandFull ];
+              # Fixes: dxvk::DxvkError
+              extraLibraries = pkgs:
+                let
+                  gl = config.hardware.opengl;
+                in
+                [
+                  pkgs.libjson # FIX: samba json errors
+                  gl.package
+                  gl.package32
+                ] ++ gl.extraPackages ++ gl.extraPackages32;
+            };
           };
-        };
-        dri = true; # required for vulkan
-        net = true;
-        #xdg = true;
-        #ldCache = true;
-        rwBinds = [ ];
-        extraConfig = no_wayland_support_fix;
-      }
-    ];
+          dri = true; # required for vulkan
+          net = true;
+          #xdg = true;
+          #ldCache = true;
+          rwBinds = [ ];
+          extraConfig = no_wayland_support_fix;
+        }
+
+        # Steam
+        ({
+          install = true;
+          args = ''-console -nochatui -nofriendsui "$@"''; # -silent
+          packages = f: p: with p; {
+            steam = steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
+              #extraPkgs = pkgs: with pkgs; [ ];
+              extraLibraries = pkgs':
+                (extraLibraries pkgs') ++
+                  [
+                    pkgs'.elfutils
+                    pkgs'.gperftools
+                  ] ++
+                  # Fixes: dxvk::DxvkError
+                  (with config.hardware.opengl; if pkgs'.hostPlatform.is64bit
+                  then [ package ] ++ extraPackages
+                  else [ package32 ] ++ extraPackages32);
+            });
+          };
+        } // steam_common)
+        ({
+          install = true;
+          packages = f: p: with p; {
+            gamescope = gamescope;
+            #r2modman = (r2modman.overrideAttrs (old: {
+            #  src = p.fetchFromGitHub {
+            #    owner = "ebkr";
+            #    repo = "r2modmanPlus";
+            #    rev = "fdc15fa393beae5c827cbac79cce232bd07f71e7";
+            #    sha256 = "sha256-exD9gHT1+LzP1x7PJFgdXEIhXH67mkSvLlEZM0jwctI=";
+            #  };
+            #}));
+            #protontricks = protontricks;
+          };
+        } // steam_common)
+      ];
+  };
 }
