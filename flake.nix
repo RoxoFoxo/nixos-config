@@ -12,6 +12,7 @@
       url = "github:shiryel/nixjail/master";
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
+    neovim.url = "github:shiryel/nvim/master";
   };
 
   outputs = { self, nixpkgs_stable, nixpkgs_unstable, home_manager, ... }@inputs:
@@ -48,7 +49,7 @@
             home-manager.useUserPackages = true;
           }
           inputs.nixjail.nixosModules.nixjail
-        ];
+        ] ++ inputs.neovim.nixosModules.neovim;
       };
     };
 }
