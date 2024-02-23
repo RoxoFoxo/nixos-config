@@ -158,6 +158,7 @@
     ffmpeg
     wev
     typst
+    xwaylandvideobridge
 
     xdg-utils
   ];
