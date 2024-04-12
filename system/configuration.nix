@@ -115,7 +115,7 @@
     nixpkgs-fmt
     nil
 
-    rnix-lsp
+    #rnix-lsp
     yt-dlp
     winetricks
     #protontricks

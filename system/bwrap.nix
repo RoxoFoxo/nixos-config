@@ -25,11 +25,11 @@ let
       "--setenv STEAM_EXTRA_COMPAT_TOOLS_PATHS ${
             pkgs.stdenv.mkDerivation rec {
               pname = "proton-ge-custom";
-              version = "GE-Proton8-25";
+              version = "GE-Proton9-1";
 
               src = pkgs.fetchurl {
                 url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/${version}.tar.gz";
-                sha256 = "sha256-s3FgsnqzbgBo9zqwmsDJNjI8+TTG827bFxzWQr184Yo=";
+                sha256 = "sha256-wCIffeayOy3kEwmIKB7e+NrliuSpKXoVYC334fxVB3U=";
               };
 
               buildCommand = ''
