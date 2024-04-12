@@ -18,7 +18,7 @@ let
     rwBinds =
       [
         "$HOME/.config/MangoHud/MangoHud.conf"
-        "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/steamapps/"
+        "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/"
       ];
     extraConfig = no_wayland_support_fix ++ [
       # Proton-GE
