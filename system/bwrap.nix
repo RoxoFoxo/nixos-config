@@ -54,9 +54,12 @@ in
           rwBinds = [ "$HOME/Downloads" ];
         }
         {
-          packages = f: p: with p; { discord = p.discord.override { nss = p.nss_latest; }; };
+          packages = f: p: with p; {
+            discord = p.discord.override { nss = p.nss_latest; };
+            vesktop = p.vesktop;
+          };
           net = true;
-          dri = true;
+          dev = true;
           rwBinds = [ "$HOME" ];
           autoBindHome = false;
         }
