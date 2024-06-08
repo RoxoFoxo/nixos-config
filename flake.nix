@@ -1,10 +1,10 @@
 {
   inputs = {
-    nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-23.11";
+    nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     # nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs_unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home_manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       # url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
@@ -12,7 +12,8 @@
       url = "github:shiryel/nixjail/master";
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
-    neovim.url = "github:shiryel/nvim/master";
+    # neovim.url = "github:shiryel/nvim/master";
+    neovim.url = "git+file:/home/roxo/Programming/nixos/system/nvim";
   };
 
   outputs = { self, nixpkgs_stable, nixpkgs_unstable, home_manager, ... }@inputs:

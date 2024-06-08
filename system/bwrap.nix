@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib , ... }:
 
 let
   no_wayland_support_fix = [
@@ -23,20 +23,9 @@ let
     extraConfig = no_wayland_support_fix ++ [
       # Proton-GE
       "--setenv STEAM_EXTRA_COMPAT_TOOLS_PATHS ${
-            pkgs.stdenv.mkDerivation rec {
-              pname = "proton-ge-custom";
-              version = "GE-Proton9-1";
-
-              src = pkgs.fetchurl {
-                url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/${version}.tar.gz";
-                sha256 = "sha256-wCIffeayOy3kEwmIKB7e+NrliuSpKXoVYC334fxVB3U=";
-              };
-
-              buildCommand = ''
-                mkdir -p $out
-                tar -C $out --strip=1 -x -f $src
-              '';
-            }
+              lib.makeSearchPathOutput "steamcompattool" "" [
+              pkgs.proton-ge-bin
+            ]
           }"
     ];
   };

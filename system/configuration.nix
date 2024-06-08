@@ -100,7 +100,7 @@
     gnupg
     docker
     clementine
-    dbeaver
+    dbeaver-bin
     insomnia
 
     #neovim
@@ -130,7 +130,6 @@
     zathura
     zip
     unzip
-    minecraft
     audacity
     gamemode
     killall
@@ -161,11 +160,20 @@
     xwaylandvideobridge
 
     xdg-utils
+    pciutils
+
+    # Video Editors
+    davinci-resolve
+    libsForQt5.kdenlive
+
+    pkgs_unstable.ringracers
   ];
 
   fonts.packages = with pkgs ;[
     nerdfonts
     corefonts
+    open-sans
+    minecraftia
   ];
 
   # Kernel (default: LTS)
@@ -177,14 +185,35 @@
   # default applications
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    # wlr.enable = true;
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
       # needs GTK_USE_PORTAL=1 per app
       xdg-desktop-portal-gtk # GNOME
-      #xdg-desktop-portal-kde # KDE
+      xdg-desktop-portal-kde # KDE
+      xdg-desktop-portal-hyprland
     ];
-    config.sway.default = lib.mkDefault [ "wlr" "gtk" ];
+    # config.sway.default = lib.mkDefault [ "wlr" "gtk" ];
+    config = {
+      # portals: https://wiki.archlinux.org/title/XDG_Desktop_Portal#List_of_backends_and_interfaces
+      sway = {
+        default = [
+          "wlr"
+          "gtk"
+          "kde"
+        ];
+        "org.freedesktop.impl.portal.Screencast" = [
+          "hyprland"
+        ];
+        "org.freedesktop.impl.portal.Screenshot" = [
+          "hyprland"
+        ];
+        #"org.freedesktop.impl.portal.Secret" = [
+        #  "gnome-keyring"
+        #];
+      };
+    };
+
   };
   xdg.mime.defaultApplications = {
     "x-scheme-handler/http" = [
@@ -304,7 +333,7 @@
     enableBrowserSocket = false;
     # NOTE: "gnome3" flavor only works with Xorg
     # To reload config: gpg-connect-agent reloadagent /bye
-    pinentryFlavor = "gtk2"; # use "tty" for console only
+    pinentryPackage = pkgs.pinentry-gnome3; # use "pkgs.pinentry-curses" for console only
   };
 
   # Docker
@@ -317,13 +346,28 @@
     platformTheme = "gnome"; # set QT_QPA_PLATFORMTHEME
   };
 
+  # Some softwares require these paths for hardware acceleration or for using python GPU libs
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+    "L+    /opt/amdgpu   -    -    -     -    ${pkgs.libdrm}"
+  ];
+
+  # rocmsupport
+  nixpkgs.config.rocmSupport = true;
+
   # OpenGL
   hardware.opengl = {
     enable = true;
     # - both dri support required for STEAM
     driSupport = true;
     driSupport32Bit = true;
-    extraPackages = with pkgs;[ vaapiVdpau libvdpau-va-gl ];
+    extraPackages = with pkgs;[
+      vaapiIntel
+      rocm-opencl-icd
+      rocm-opencl-runtime
+      vulkan-validation-layers
+      rocmPackages.clr.icd
+    ];
   };
 
   # AMD
@@ -405,6 +449,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
