@@ -1,0 +1,1 @@
+/nix/store/wxp968584yl2ygfm3kwhl712wc2y6r5k-nix-2.18.5/bin/nix

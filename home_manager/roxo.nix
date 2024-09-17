@@ -7,11 +7,11 @@
     # [1] - https://github.com/NixOS/nixpkgs/blob/nixos-22.11/pkgs/applications/window-managers/sway/wrapper.nix#L20
     # [2] - https://wiki.archlinux.org/title/systemd/User#Environment_variables
     # [3] - https://github.com/emersion/xdg-desktop-portal-wlr/wiki/"It-doesn't-work"-Troubleshooting-Checklist
-    (pkgs.writeScriptBin "sway-configure-dbus" ''
-      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
-    ''
-    )
+    #(pkgs.writeScriptBin "sway-configure-dbus" ''
+    #  dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
+    #  systemctl --user restart pipewire wireplumber xdg-desktop-portal xdg-desktop-portal-wlr
+    #''
+    #)
 
     swaybg
     swaylock
@@ -38,7 +38,7 @@
     # usefull to make xdg.portal... work
     # https://github.com/swaywm/sway/issues/5160#issuecomment-641173221
     # https://nixos.wiki/wiki/Sway#Systemd_integration
-    systemd.enable = true;
+    systemd.enable = false;
     wrapperFeatures.gtk = true;
     xwayland = true;
     config = {
@@ -71,6 +71,10 @@
         { command = "swaymsg 'output HDMI-A-1 position 0 0'"; always = true; }
         { command = "swaymsg 'output DP-1 position 1920 0'"; always = true; }
         { command = "swaymsg 'output * adaptive_sync on'"; always = true; }
+
+        { command = "dbus-update-activation-environment --systemd XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE I3SOCK SWAYSOCK DISPLAY WAYLAND_DISPLAY XCURSOR_THEME XCURSOR_SIZE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"; }
+        { command = "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE I3SOCK SWAYSOCK DISPLAY WAYLAND_DISPLAY XCURSOR_THEME XCURSOR_SIZE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"; }
+        { command = "systemctl --user reset-failed"; }
       ];
     };
   };

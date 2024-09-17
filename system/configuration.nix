@@ -11,6 +11,7 @@
       ./hardware-configuration.nix
       ./bwrap.nix
       ./game_performance.nix
+      ./xdg-mimes.nix
     ];
 
   # Bootloader.
@@ -80,9 +81,9 @@
   environment.systemPackages = with pkgs; [
     kitty
     firefox
-    pkgs_unstable.tdesktop
+    tdesktop
     cinnamon.nemo
-    pkgs_unstable.cinnamon.nemo-fileroller
+    pkgs_unstable.nemo-fileroller
     gnome.nautilus
     gnome.adwaita-icon-theme
     mpv
@@ -125,7 +126,7 @@
     silver-searcher
     gnumake
     vscode
-    pkgs_unstable.krita
+    krita
     openvpn
     zathura
     zip
@@ -166,7 +167,9 @@
     davinci-resolve
     libsForQt5.kdenlive
 
-    pkgs_unstable.ringracers
+    # pkgs_unstable.ringracers
+
+    glances
   ];
 
   fonts.packages = with pkgs ;[
@@ -185,65 +188,55 @@
   # default applications
   xdg.portal = {
     enable = true;
-    # wlr.enable = true;
+
     extraPortals = with pkgs; [
       xdg-desktop-portal-wlr
-      # needs GTK_USE_PORTAL=1 per app
-      xdg-desktop-portal-gtk # GNOME
-      xdg-desktop-portal-kde # KDE
+      xdg-desktop-portal-gtk # GNOME, NOTE: this provides the "Open With…" window
       xdg-desktop-portal-hyprland
     ];
-    # config.sway.default = lib.mkDefault [ "wlr" "gtk" ];
+
     config = {
-      # portals: https://wiki.archlinux.org/title/XDG_Desktop_Portal#List_of_backends_and_interfaces
       sway = {
         default = [
           "wlr"
-          "gtk"
-          "kde"
         ];
-        "org.freedesktop.impl.portal.Screencast" = [
-          "hyprland"
-        ];
-        "org.freedesktop.impl.portal.Screenshot" = [
-          "hyprland"
-        ];
-        #"org.freedesktop.impl.portal.Secret" = [
-        #  "gnome-keyring"
-        #];
+        "org.freedesktop.impl.portal.ScreenCast" = "hyprland";
+        "org.freedesktop.impl.portal.Screenshot" = "hyprland";
       };
     };
 
+   # xdgOpenUsePortal = true;
   };
-  xdg.mime.defaultApplications = {
-    "x-scheme-handler/http" = [
-      "firefox.desktop"
-      "librewolf.desktop"
-      "chromium-browser.desktop"
-    ];
-    "x-scheme-handler/https" = [
-      "firefox.desktop"
-      "librewolf.desktop"
-      "chromium-browser.desktop"
-    ];
-    "application/x-extension-html" = [
-      "firefox.desktop"
-      "librewolf.desktop"
-      "chromium-browser.desktop"
-    ];
-    "application/pdf" = "firefox.desktop";
-    "application/json" = "nvim.desktop";
-    "text/*" = "nvim-qt.desktop";
-    "audio/*" = "mpv.desktop";
-    "video/*" = "mpv.desktop";
-    "image/*" = [
-      "imv.desktop"
-      "firefox.desktop"
-      "org.kde.krita.desktop"
-    ];
-    "inode/directory" = "nemo.desktop";
-    "text/directory" = "nemo.desktop";
-  };
+
+  #xdg.mime.defaultApplications = {
+  #  "x-scheme-handler/http" = [
+  #    "firefox.desktop"
+  #    "librewolf.desktop"
+  #    "chromium-browser.desktop"
+  #  ];
+  #  "x-scheme-handler/https" = [
+  #    "firefox.desktop"
+  #    "librewolf.desktop"
+  #    "chromium-browser.desktop"
+  #  ];
+  #  "application/x-extension-html" = [
+  #    "firefox.desktop"
+  #    "librewolf.desktop"
+  #    "chromium-browser.desktop"
+  #  ];
+  #  "application/pdf" = "firefox.desktop";
+  #  "application/json" = "nvim.desktop";
+  #  "text/*" = "nvim-qt.desktop";
+  #  "audio/*" = "mpv.desktop";
+  #  "video/*" = "mpv.desktop";
+  #  "image/*" = [
+  #    "imv.desktop"
+  #    "firefox.desktop"
+  #    "org.kde.krita.desktop"
+  #  ];
+  #  "inode/directory" = "nemo.desktop";
+  #  "text/directory" = "nemo.desktop";
+  #};
 
   # RealtimeKit
   security.rtkit.enable = true;
@@ -254,6 +247,8 @@
     GTK_THEME = "Adwaita:dark";
     AMD_VULKAN_ICD = "RADV";
   };
+
+  environment.etc."sway/config.d/nixos.conf".source = lib.mkForce (pkgs.writeText "nixos.conf" "");
 
   # Pipewire
   services = {
@@ -311,6 +306,9 @@
       editor = "nvim";
     };
   };
+
+  # Direnv
+  programs.direnv.enable = true;
 
   # GPG-agent SSH shenanigans
   services.openssh = {

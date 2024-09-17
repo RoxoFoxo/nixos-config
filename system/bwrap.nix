@@ -1,4 +1,4 @@
-{ config, pkgs, lib , ... }:
+{ config, pkgs, lib, ... }:
 
 let
   no_wayland_support_fix = [
@@ -20,13 +20,13 @@ let
         "$HOME/.config/MangoHud/MangoHud.conf"
         "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/"
       ];
-    extraConfig = no_wayland_support_fix ++ [
+    extraConfig = [
       # Proton-GE
       "--setenv STEAM_EXTRA_COMPAT_TOOLS_PATHS ${
-              lib.makeSearchPathOutput "steamcompattool" "" [
-              pkgs.proton-ge-bin
-            ]
-          }"
+                  lib.makeSearchPathOutput "steamcompattool" "" [
+                  pkgs.proton-ge-bin
+                ]
+              }"
     ];
   };
 in
@@ -36,12 +36,15 @@ in
     defaultHomeDirRoot = "$HOME/bwrap/";
     profiles =
       [
+        # prismlauncher
         {
           packages = f: p: with p; { prismlauncher = prismlauncher; };
           net = true;
           dri = true;
           rwBinds = [ "$HOME/Downloads" ];
         }
+
+        # discord
         {
           packages = f: p: with p; {
             discord = p.discord.override { nss = p.nss_latest; };
@@ -51,7 +54,11 @@ in
           dev = true;
           rwBinds = [ "$HOME" ];
           autoBindHome = false;
+          defaultBinds = false;
+          extraConfig = [ "--setenv XDG_SESSION_TYPE x11" ];
         }
+
+        # lutris
         {
           packages = f: p: with p; {
             lutris = lutris.override {
@@ -111,6 +118,29 @@ in
             #protontricks = protontricks;
           };
         } // steam_common)
+
+        # heroic launcher
+        {
+          dri = true; # required for vulkan
+          net = true;
+          xdg = false; # if prefs.steam.vr_integration then true else "ro";
+          dbusProxy = {
+            enable = true;
+            user = {
+              talks = [
+                "org.freedesktop.Notifications"
+                "org.kde.StatusNotifierWatcher"
+              ];
+            };
+          };
+          packages = f: p: with p; {
+            heroic = heroic;
+          };
+          rwBinds = [
+            "$HOME/games/steam_custom_games"
+          ];
+          extraConfig = steam_common.extraConfig;
+        }
       ];
   };
 }

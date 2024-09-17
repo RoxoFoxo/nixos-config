@@ -12,8 +12,11 @@
       url = "github:shiryel/nixjail/master";
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
-    # neovim.url = "github:shiryel/nvim/master";
-    neovim.url = "git+file:/home/roxo/Programming/nixos/system/nvim";
+    #neovim = {
+    #  url = "github:shiryel/nvim/master";
+    #  # inputs.nixpkgs.follows = "nixpkgs_unstable";
+    #};
+    neovim.url = "git+file:/home/roxo/Programming/nvim";
   };
 
   outputs = { self, nixpkgs_stable, nixpkgs_unstable, home_manager, ... }@inputs:
@@ -35,6 +38,10 @@
         lib = lib;
         modules = [
           ./system/configuration.nix
+          # ({ pkgs_unstable, ... }: {
+          #   nixpkgs.overlays = lib.mkBefore [ (p: f: { neovim = pkgs_unstable.neovim; }) ];
+          # })
+
 
           # Home Manager
           # https://rycee.gitlab.io/home-manager/
