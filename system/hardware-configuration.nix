@@ -8,22 +8,24 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usbhid" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a551203a-172b-449d-bb5f-1526e0706868";
+    { device = "/dev/disk/by-uuid/1c539cd8-9c32-45a0-9a58-4c94d295ed56";
       fsType = "btrfs";
       options = [ "subvol=@" "compress=zstd:9" ];
     };
 
-  boot.initrd.luks.devices."luks-9ab4f688-fc14-4a7b-9949-af453956f2a2".device = "/dev/disk/by-uuid/9ab4f688-fc14-4a7b-9949-af453956f2a2";
+  boot.initrd.luks.devices."luks-b95f4e25-cc86-419e-96e3-70d1f4e406fc".device = "/dev/disk/by-uuid/b95f4e25-cc86-419e-96e3-70d1f4e406fc";
+  boot.initrd.luks.devices."luks-c0d2f502-d907-4a7e-99d8-ccdc70f1e4a1".device = "/dev/disk/by-uuid/c0d2f502-d907-4a7e-99d8-ccdc70f1e4a1";
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/2CE7-D80A";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/48D3-28F9";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   fileSystems."/home/roxo/mnt/manjaro" =
@@ -32,7 +34,7 @@
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/d935b127-6ab6-4b48-91da-1a45cd48eb50"; }
+    [ { device = "/dev/disk/by-uuid/6998f9b6-7cf4-4367-9bb0-303cad324a6e"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

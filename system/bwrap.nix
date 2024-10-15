@@ -120,27 +120,50 @@ in
         } // steam_common)
 
         # heroic launcher
+        # {
+        #   dri = true; # required for vulkan
+        #   net = true;
+        #   xdg = false; # if prefs.steam.vr_integration then true else "ro";
+        #   dbusProxy = {
+        #     enable = true;
+        #     user = {
+        #       talks = [
+        #         "org.freedesktop.Notifications"
+        #         "org.kde.StatusNotifierWatcher"
+        #       ];
+        #     };
+        #   };
+        #   packages = f: p: with p; {
+        #     heroic = heroic;
+        #   };
+        #   rwBinds = [
+        #     "$HOME/games/steam_custom_games"
+        #   ];
+        #   extraConfig = steam_common.extraConfig;
+        # }
+
         {
-          dri = true; # required for vulkan
-          net = true;
-          xdg = false; # if prefs.steam.vr_integration then true else "ro";
-          dbusProxy = {
-            enable = true;
-            user = {
-              talks = [
-                "org.freedesktop.Notifications"
-                "org.kde.StatusNotifierWatcher"
-              ];
-            };
-          };
-          packages = f: p: with p; {
-            heroic = heroic;
-          };
-          rwBinds = [
-            "$HOME/games/steam_custom_games"
+          packages = f: p: with p; { heroic = heroic; };
+          install = true;
+          net = false;
+          dri = true;
+          xdg = false;
+          dbusProxy.enable = true;
+          autoBindHome = false;
+          # rwBinds = [{ from = "$HOME/bwrap/heroic-the-sims"; to = "$HOME/"; }];
+          rwBinds = [ { from = "$HOME/bwrap/heroic-the-sims"; to = "$HOME/"; } "/tmp/.X11-unix/X0" ];
+          extraConfig = [
+            # Fix games breaking on wayland
+            "--unsetenv WAYLAND_DISPLAY"
+            "--unsetenv XDG_SESSION_TYPE"
+            "--unsetenv CLUTTER_BACKEND"
+            "--unsetenv QT_QPA_PLATFORM"
+            "--unsetenv SDL_VIDEODRIVER"
+            "--unsetenv SDL_AUDIODRIVER"
+            "--unsetenv NIXOS_OZONE_WL"
           ];
-          extraConfig = steam_common.extraConfig;
         }
+
       ];
   };
 }
