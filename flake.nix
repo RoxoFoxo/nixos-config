@@ -1,11 +1,9 @@
 {
   inputs = {
-    # nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs_stable.url = "github:NixOS/nixpkgs/c0b1da36f7c34a7146501f684e9ebdf15d2bebf8";
+    nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs_unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home_manager = {
-      url = "github:nix-community/home-manager/release-24.05";
-      # url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
     nixjail = {

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, lib, pkgs, pkgs_unstable, ... }:
+{ lib, pkgs, pkgs_unstable, ... }:
 
 {
   imports =
@@ -82,10 +82,10 @@
     kitty
     firefox
     tdesktop
-    cinnamon.nemo
+    nemo
     pkgs_unstable.nemo-fileroller
-    gnome.nautilus
-    gnome.adwaita-icon-theme
+    nautilus
+    adwaita-icon-theme
     mpv
     keepassxc
     glxinfo # glxgears
@@ -174,12 +174,62 @@
     qbittorrent
   ];
 
-  fonts.packages = with pkgs ;[
-    nerdfonts
-    corefonts
-    open-sans
-    minecraftia
-  ];
+  # fonts.packages = with pkgs ;[
+  #   nerdfonts
+  #   corefonts
+  #   open-sans
+  #   minecraftia
+  # ];
+
+  fonts = {
+    fontconfig.enable = true;
+    fontDir.enable = true;
+
+    enableGhostscriptFonts = true;
+
+    enableDefaultPackages = true;
+    packages = with pkgs; [
+      (nerdfonts.override {
+        enableWindowsFonts = true;
+        # Reduce size of NerdFonts:
+        # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/fonts/nerdfonts/shas.nix
+        # SymbolsOnly is used to mix fonts like on the waybar
+        fonts = [ "NerdFontsSymbolsOnly" "Cousine" ];
+      })
+      carlito
+      dejavu_fonts
+      fira
+      fira-code
+      fira-mono
+      inconsolata
+      inter
+      libertine
+      noto-fonts
+      noto-fonts-emoji
+      noto-fonts-extra
+      roboto
+      roboto-mono
+      roboto-slab
+      source-code-pro
+      source-sans-pro
+      source-serif-pro
+      twitter-color-emoji
+      corefonts
+      open-sans
+      minecraftia
+    ];
+
+    # cd /nix/var/nix/profiles/system/sw/share/X11/fonts
+    # fc-query DejaVuSans.ttf | grep '^\s\+family:' | cut -d'"' -f2 
+    # OR
+    # fc-list | grep Cousine
+    fontconfig.defaultFonts = {
+      sansSerif = [ "Source Sans Pro" ];
+      serif = [ "Source Serif Pro" ];
+      monospace = [ "Cousine Nerd Font" ]; # icons "without mono"
+      emoji = [ "Twitter Color Emoji" ];
+    };
+  };
 
   # Kernel (default: LTS)
   #boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -207,7 +257,7 @@
       };
     };
 
-   # xdgOpenUsePortal = true;
+    # xdgOpenUsePortal = true;
   };
 
   #xdg.mime.defaultApplications = {
@@ -356,16 +406,13 @@
   nixpkgs.config.rocmSupport = true;
 
   # OpenGL
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     # - both dri support required for STEAM
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = with pkgs;[
-      vaapiIntel
-      rocm-opencl-icd
-      rocm-opencl-runtime
-      vulkan-validation-layers
+      libvdpau-va-gl
+      rocmPackages.clr
       rocmPackages.clr.icd
     ];
   };
@@ -407,7 +454,7 @@
 
   # dunno nix stuff
   nix = {
-    package = pkgs.nixFlakes; # or versioned attributes like nix_2_7
+    package = pkgs.nixVersions.stable; # or versioned attributes like nix_2_7
     extraOptions = ''
       experimental-features = nix-command flakes
       warn-dirty = false

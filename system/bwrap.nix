@@ -47,8 +47,7 @@ in
         # discord
         {
           packages = f: p: with p; {
-            discord = p.discord.override { nss = p.nss_latest; };
-            vesktop = p.vesktop;
+            discord = p.discord-canary.override { nss = p.nss_latest; };
           };
           net = true;
           dev = true;
@@ -56,6 +55,18 @@ in
           autoBindHome = false;
           defaultBinds = false;
           extraConfig = [ "--setenv XDG_SESSION_TYPE x11" ];
+        }
+
+        # vesktop
+        {
+          packages = f: p: with p; {
+            vesktop = p.vesktop;
+          };
+          net = true;
+          dev = true;
+          rwBinds = [ "$HOME" ];
+          autoBindHome = false;
+          defaultBinds = false;
         }
 
         # lutris
@@ -66,13 +77,13 @@ in
               # Fixes: dxvk::DxvkError
               extraLibraries = pkgs:
                 let
-                  gl = config.hardware.opengl;
+                  gfx = config.hardware.graphics;
                 in
                 [
                   pkgs.libjson # FIX: samba json errors
-                  gl.package
-                  gl.package32
-                ] ++ gl.extraPackages ++ gl.extraPackages32;
+                  gfx.package
+                  gfx.package32
+                ] ++ gfx.extraPackages ++ gfx.extraPackages32;
             };
           };
           dri = true; # required for vulkan
@@ -86,7 +97,7 @@ in
         # Steam
         ({
           install = true;
-          args = ''-console -nochatui -nofriendsui "$@"''; # -silent
+          post_exec = ''-console -nochatui -nofriendsui "$@"''; # -silent
           packages = f: p: with p; {
             steam = steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
               #extraPkgs = pkgs: with pkgs; [ ];
@@ -97,7 +108,7 @@ in
                     pkgs'.gperftools
                   ] ++
                   # Fixes: dxvk::DxvkError
-                  (with config.hardware.opengl; if pkgs'.hostPlatform.is64bit
+                  (with config.hardware.graphics; if pkgs'.hostPlatform.is64bit
                   then [ package ] ++ extraPackages
                   else [ package32 ] ++ extraPackages32);
             });
@@ -151,7 +162,7 @@ in
           dbusProxy.enable = true;
           autoBindHome = false;
           # rwBinds = [{ from = "$HOME/bwrap/heroic-the-sims"; to = "$HOME/"; }];
-          rwBinds = [ { from = "$HOME/bwrap/heroic-the-sims"; to = "$HOME/"; } "/tmp/.X11-unix/X0" ];
+          rwBinds = [{ from = "$HOME/bwrap/heroic-the-sims"; to = "$HOME/"; } "/tmp/.X11-unix/X0"];
           extraConfig = [
             # Fix games breaking on wayland
             "--unsetenv WAYLAND_DISPLAY"

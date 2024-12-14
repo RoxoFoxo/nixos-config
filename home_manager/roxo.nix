@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   home.packages = with pkgs; [
@@ -63,6 +63,7 @@
       keybindings = lib.mkOptionDefault {
         "Mod4+Shift+Tab" = "focus left";
         "Mod4+Tab" = "focus right";
+        # "Mod4+Prior" = "mode sims";
       };
       startup = [
         { command = "${pkgs.networkmanagerapplet}/bin/nm-applet --indicator"; }
@@ -76,6 +77,13 @@
         { command = "systemctl --user import-environment XDG_CURRENT_DESKTOP XDG_SESSION_DESKTOP XDG_SESSION_TYPE I3SOCK SWAYSOCK DISPLAY WAYLAND_DISPLAY XCURSOR_THEME XCURSOR_SIZE GTK_THEME QT_QPA_PLATFORMTHEME QT_STYLE_OVERRIDE"; }
         { command = "systemctl --user reset-failed"; }
       ];
+      #
+      #      modes = {
+      #        sims = {
+      #          button4 = "cmus";
+      #          Next = "mode default";
+      #        };
+      #      };
     };
   };
 
