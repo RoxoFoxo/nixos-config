@@ -54,7 +54,6 @@ in
           rwBinds = [ "$HOME" ];
           autoBindHome = false;
           defaultBinds = false;
-          extraConfig = [ "--setenv XDG_SESSION_TYPE x11" ];
         }
 
         # vesktop
