@@ -172,6 +172,8 @@
     glances
 
     qbittorrent
+
+    foliate
   ];
 
   # fonts.packages = with pkgs ;[
