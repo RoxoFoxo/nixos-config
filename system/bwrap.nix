@@ -12,7 +12,6 @@ let
   ];
   steam_common = {
     dev = true; # required for vulkan
-    net = true;
     #tmp = true;
     xdg = true; # if prefs.steam.vr_integration then true else "ro";
     rwBinds =
@@ -39,7 +38,6 @@ in
         # prismlauncher
         {
           packages = f: p: with p; { prismlauncher = prismlauncher; };
-          net = true;
           dri = true;
           rwBinds = [ "$HOME/Downloads" ];
         }
@@ -49,7 +47,6 @@ in
           packages = f: p: with p; {
             discord = p.discord-canary.override { nss = p.nss_latest; };
           };
-          net = true;
           dev = true;
           rwBinds = [ "$HOME" ];
           autoBindHome = false;
@@ -61,7 +58,6 @@ in
           packages = f: p: with p; {
             vesktop = p.vesktop;
           };
-          net = true;
           dev = true;
           rwBinds = [ "$HOME" ];
           autoBindHome = false;
@@ -86,7 +82,6 @@ in
             };
           };
           dri = true; # required for vulkan
-          net = true;
           #xdg = true;
           #ldCache = true;
           rwBinds = [ ];
@@ -132,7 +127,6 @@ in
         # heroic launcher
         # {
         #   dri = true; # required for vulkan
-        #   net = true;
         #   xdg = false; # if prefs.steam.vr_integration then true else "ro";
         #   dbusProxy = {
         #     enable = true;
@@ -155,7 +149,7 @@ in
         {
           packages = f: p: with p; { heroic = heroic; };
           install = true;
-          net = false;
+          shareNamespace.net = false;
           dri = true;
           xdg = false;
           dbusProxy.enable = true;

@@ -39,17 +39,17 @@
   time.timeZone = "America/Sao_Paulo";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.utf8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "pt_BR.utf8";
-    LC_IDENTIFICATION = "pt_BR.utf8";
-    LC_MEASUREMENT = "pt_BR.utf8";
-    LC_MONETARY = "pt_BR.utf8";
-    LC_NAME = "pt_BR.utf8";
-    LC_NUMERIC = "pt_BR.utf8";
-    LC_PAPER = "pt_BR.utf8";
-    LC_TELEPHONE = "pt_BR.utf8";
+    LC_ADDRESS = "pt_BR.UTF-8";
+    LC_IDENTIFICATION = "pt_BR.UTF-8";
+    LC_MEASUREMENT = "pt_BR.UTF-8";
+    LC_MONETARY = "pt_BR.UTF-8";
+    LC_NAME = "pt_BR.UTF-8";
+    LC_NUMERIC = "pt_BR.UTF-8";
+    LC_PAPER = "pt_BR.UTF-8";
+    LC_TELEPHONE = "pt_BR.UTF-8";
     # LC_TIME = "pt_BR.utf8";
   };
 
@@ -158,7 +158,6 @@
     ffmpeg
     wev
     typst
-    xwaylandvideobridge
 
     xdg-utils
     pciutils
@@ -191,13 +190,8 @@
 
     enableDefaultPackages = true;
     packages = with pkgs; [
-      (nerdfonts.override {
-        enableWindowsFonts = true;
-        # Reduce size of NerdFonts:
-        # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/data/fonts/nerdfonts/shas.nix
-        # SymbolsOnly is used to mix fonts like on the waybar
-        fonts = [ "NerdFontsSymbolsOnly" "Cousine" ];
-      })
+      nerd-fonts.symbols-only
+      nerd-fonts.cousine
       carlito
       dejavu_fonts
       fira
@@ -397,12 +391,6 @@
     style = "adwaita-dark"; # set QT_STYLE_OVERRIDE
     platformTheme = "gnome"; # set QT_QPA_PLATFORMTHEME
   };
-
-  # Some softwares require these paths for hardware acceleration or for using python GPU libs
-  systemd.tmpfiles.rules = [
-    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-    "L+    /opt/amdgpu   -    -    -     -    ${pkgs.libdrm}"
-  ];
 
   # rocmsupport
   nixpkgs.config.rocmSupport = true;
