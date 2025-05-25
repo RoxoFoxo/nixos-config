@@ -104,7 +104,7 @@
     dbeaver-bin
     insomnia
 
-    #neovim
+    neovim-full
     pkgs_unstable.elixir
     pkgs_unstable.elixir_ls
     pkgs_unstable.inotify-tools
