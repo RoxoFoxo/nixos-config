@@ -47,6 +47,9 @@
         "type:keyboard" = {
           xkb_layout = "br";
         };
+        "9580:109:HUION_Huion_Tablet_H1162" = {
+          map_to_output = "DP-1";
+        };
         "9580:109:HUION_Huion_Tablet_H1162_Pad" = {
           map_to_output = "DP-1";
         };
