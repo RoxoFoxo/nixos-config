@@ -158,6 +158,7 @@
     ffmpeg
     wev
     typst
+    quodlibet
 
     xdg-utils
     pciutils
