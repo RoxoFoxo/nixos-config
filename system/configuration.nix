@@ -164,8 +164,8 @@
     pciutils
 
     # Video Editors
-    davinci-resolve
-    libsForQt5.kdenlive
+    # davinci-resolve
+    # libsForQt5.kdenlive
 
     # pkgs_unstable.ringracers
 
