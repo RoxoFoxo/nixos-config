@@ -91,6 +91,33 @@ in
           ];
         }
 
+        # PSP emulator
+        {
+          packages = f: p: with p; {
+            ppsspp = ppsspp;
+          };
+          install = true;
+          dev = true;
+          shareNamespace.net = false;
+          dri = true;
+          xdg = true;
+          # dbusProxy.enable = true;
+          rwBinds = [ ];
+          roBinds = [
+          "/tmp/.X11-unix/X0"
+          ];
+          extraConfig = [
+            # Fix games breaking on wayland
+            "--unsetenv WAYLAND_DISPLAY"
+            "--unsetenv XDG_SESSION_TYPE"
+            "--unsetenv CLUTTER_BACKEND"
+            "--unsetenv QT_QPA_PLATFORM"
+            "--unsetenv SDL_VIDEODRIVER"
+            "--unsetenv SDL_AUDIODRIVER"
+            "--unsetenv NIXOS_OZONE_WL"
+          ];
+        }
+
         # lutris
         {
           packages = f: p: with p; {
