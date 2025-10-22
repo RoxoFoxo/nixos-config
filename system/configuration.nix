@@ -174,6 +174,8 @@
     qbittorrent
 
     foliate
+
+    vintagestory
   ];
 
   # fonts.packages = with pkgs ;[

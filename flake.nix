@@ -11,7 +11,7 @@
       inputs.nixpkgs.follows = "nixpkgs_stable";
     };
     # neovim.url = "git+file:/home/roxo/Programming/nvim";
-    neovim.url = "github:shiryel/nvim/master";
+    neovim.url = "github:shiryel/nvim/defcf4f5913167d7392f30495e6bda1527a51262";
   };
 
   outputs = { self, nixpkgs_stable, nixpkgs_unstable, home_manager, ... }@inputs:
