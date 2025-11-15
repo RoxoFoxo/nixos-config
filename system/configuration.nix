@@ -106,7 +106,7 @@
 
     neovim-full
     pkgs_unstable.elixir
-    pkgs_unstable.elixir_ls
+    pkgs_unstable.elixir-ls
     pkgs_unstable.inotify-tools
     tree-sitter
     gcc
@@ -176,6 +176,8 @@
     foliate
 
     vintagestory
+
+    tauon
   ];
 
   # fonts.packages = with pkgs ;[

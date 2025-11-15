@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, pkgs_unstable, lib, ... }:
 
 let
   no_wayland_support_fix = [
@@ -119,33 +119,33 @@ in
         }
 
         # lutris
-        {
-          packages = f: p: with p; {
-            lutris = lutris.override {
-              extraPkgs = pkgs: [ pkgs.openssl pkgs.wineWowPackages.waylandFull ];
-              # Fixes: dxvk::DxvkError
-              extraLibraries = pkgs:
-                let
-                  gfx = config.hardware.graphics;
-                in
-                [
-                  pkgs.libjson # FIX: samba json errors
-                  gfx.package
-                  gfx.package32
-                ] ++ gfx.extraPackages ++ gfx.extraPackages32;
-            };
-          };
-          dri = true; # required for vulkan
-          #xdg = true;
-          #ldCache = true;
-          rwBinds = [ ];
-          extraConfig = no_wayland_support_fix;
-        }
+        #{
+        #  packages = f: p: with p; {
+        #    lutris = pkgs_unstable.lutris.override {
+        #      extraPkgs = pkgs: [ pkgs.openssl pkgs.wineWowPackages.waylandFull ];
+        #      # Fixes: dxvk::DxvkError
+        #      extraLibraries = pkgs:
+        #        let
+        #          gfx = config.hardware.graphics;
+        #        in
+        #        [
+        #          pkgs.libjson # FIX: samba json errors
+        #          gfx.package
+        #          gfx.package32
+        #        ] ++ gfx.extraPackages ++ gfx.extraPackages32;
+        #    };
+        #  };
+        #  dri = true; # required for vulkan
+        #  #xdg = true;
+        #  #ldCache = true;
+        #  rwBinds = [ ];
+        #  extraConfig = no_wayland_support_fix;
+        #}
 
         # Steam
         ({
           install = true;
-          post_exec = ''-console -nochatui -nofriendsui "$@"''; # -silent
+          post_exec = ''-console "$@"''; # -silent
           packages = f: p: with p; {
             steam = steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
               #extraPkgs = pkgs: with pkgs; [ ];
@@ -179,27 +179,6 @@ in
         } // steam_common)
 
         # heroic launcher
-        # {
-        #   dri = true; # required for vulkan
-        #   xdg = false; # if prefs.steam.vr_integration then true else "ro";
-        #   dbusProxy = {
-        #     enable = true;
-        #     user = {
-        #       talks = [
-        #         "org.freedesktop.Notifications"
-        #         "org.kde.StatusNotifierWatcher"
-        #       ];
-        #     };
-        #   };
-        #   packages = f: p: with p; {
-        #     heroic = heroic;
-        #   };
-        #   rwBinds = [
-        #     "$HOME/games/steam_custom_games"
-        #   ];
-        #   extraConfig = steam_common.extraConfig;
-        # }
-
         {
           packages = f: p: with p; { heroic = heroic; };
           install = true;
