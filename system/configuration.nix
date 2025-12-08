@@ -81,14 +81,15 @@
   environment.systemPackages = with pkgs; [
     kitty
     firefox
-    tdesktop
+    telegram-desktop
     nemo
     pkgs_unstable.nemo-fileroller
     nautilus
     adwaita-icon-theme
     mpv
     keepassxc
-    glxinfo # glxgears
+    # glxinfo # glxgears
+    mesa-demos
     vulkan-tools # vulkaninfo
     clinfo
     rocmPackages.rocm-smi
@@ -206,8 +207,8 @@
       inter
       libertine
       noto-fonts
-      noto-fonts-emoji
-      noto-fonts-extra
+      noto-fonts-color-emoji
+      noto-fonts-monochrome-emoji
       roboto
       roboto-mono
       roboto-slab
