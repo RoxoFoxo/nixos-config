@@ -14,11 +14,6 @@ let
     dev = true; # required for vulkan
     #tmp = true;
     xdg = true; # if prefs.steam.vr_integration then true else "ro";
-    rwBinds =
-      [
-        "$HOME/.config/MangoHud/MangoHud.conf"
-        "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/"
-      ];
     extraConfig = [
       # Proton-GE
       "--setenv STEAM_EXTRA_COMPAT_TOOLS_PATHS ${
@@ -77,7 +72,7 @@ in
           # dbusProxy.enable = true;
           rwBinds = [ ];
           roBinds = [
-          "/tmp/.X11-unix/X0"
+            "/tmp/.X11-unix/X0"
           ];
           extraConfig = [
             # Fix games breaking on wayland
@@ -104,7 +99,7 @@ in
           # dbusProxy.enable = true;
           rwBinds = [ ];
           roBinds = [
-          "/tmp/.X11-unix/X0"
+            "/tmp/.X11-unix/X0"
           ];
           extraConfig = [
             # Fix games breaking on wayland
@@ -131,7 +126,7 @@ in
           # dbusProxy.enable = true;
           rwBinds = [ ];
           roBinds = [
-          "/tmp/.X11-unix/X0"
+            "/tmp/.X11-unix/X0"
           ];
           extraConfig = [
             # Fix games breaking on wayland
@@ -172,6 +167,12 @@ in
         # Steam
         ({
           install = true;
+          autoBindHome = false;
+          rwBinds = [
+            { from = "$HOME/bwrap/steam"; to = "$HOME/"; }
+            "$HOME/.config/MangoHud/MangoHud.conf"
+            "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/"
+          ];
           post_exec = ''-console "$@"''; # -silent
           packages = f: p: with p; {
             steam = steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
