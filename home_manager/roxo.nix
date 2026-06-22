@@ -26,7 +26,7 @@
     libnotify # required to use notify-send
     imv
     networkmanagerapplet # needs to be installed to have the systrey icon of nm-applet
-    xorg.xrandr # to make games work on correct display
+    xrandr # to make games work on correct display
     glfw # to make native games work
   ];
 

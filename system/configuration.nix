@@ -112,8 +112,8 @@
     tree-sitter
     gcc
     ripgrep
-    nodePackages.svelte-language-server
-    nodePackages.vscode-langservers-extracted
+    svelte-language-server
+    vscode-langservers-extracted
     nixpkgs-fmt
     nil
 
@@ -124,7 +124,6 @@
     #xorg.xkill
     chromium
     xclip
-    silver-searcher
     gnumake
     vscode
     krita
@@ -154,7 +153,7 @@
       ];
     })
     tetrio-desktop
-    nodejs_20
+    #nodejs_20
     cmus
     ffmpeg
     wev
