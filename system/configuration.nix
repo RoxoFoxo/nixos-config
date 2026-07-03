@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ lib, pkgs, pkgs_unstable, ... }:
+{ lib, pkgs, pkgs_unstable, pkgs_old, ... }:
 
 {
   imports =
@@ -126,7 +126,7 @@
     xclip
     gnumake
     vscode
-    krita
+    pkgs_old.krita
     openvpn
     zathura
     zip
@@ -178,6 +178,8 @@
     vintagestory
 
     tauon
+
+    beyond-all-reason
   ];
 
   # fonts.packages = with pkgs ;[
