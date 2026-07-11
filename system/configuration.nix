@@ -127,6 +127,7 @@
     gnumake
     vscode
     pkgs_old.krita
+    #krita
     openvpn
     zathura
     zip
@@ -178,16 +179,7 @@
     vintagestory
 
     tauon
-
-    beyond-all-reason
   ];
-
-  # fonts.packages = with pkgs ;[
-  #   nerdfonts
-  #   corefonts
-  #   open-sans
-  #   minecraftia
-  # ];
 
   fonts = {
     fontconfig.enable = true;
@@ -263,36 +255,6 @@
     # xdgOpenUsePortal = true;
   };
 
-  #xdg.mime.defaultApplications = {
-  #  "x-scheme-handler/http" = [
-  #    "firefox.desktop"
-  #    "librewolf.desktop"
-  #    "chromium-browser.desktop"
-  #  ];
-  #  "x-scheme-handler/https" = [
-  #    "firefox.desktop"
-  #    "librewolf.desktop"
-  #    "chromium-browser.desktop"
-  #  ];
-  #  "application/x-extension-html" = [
-  #    "firefox.desktop"
-  #    "librewolf.desktop"
-  #    "chromium-browser.desktop"
-  #  ];
-  #  "application/pdf" = "firefox.desktop";
-  #  "application/json" = "nvim.desktop";
-  #  "text/*" = "nvim-qt.desktop";
-  #  "audio/*" = "mpv.desktop";
-  #  "video/*" = "mpv.desktop";
-  #  "image/*" = [
-  #    "imv.desktop"
-  #    "firefox.desktop"
-  #    "org.kde.krita.desktop"
-  #  ];
-  #  "inode/directory" = "nemo.desktop";
-  #  "text/directory" = "nemo.desktop";
-  #};
-
   # RealtimeKit
   security.rtkit.enable = true;
 
@@ -316,30 +278,6 @@
       jack.enable = true;
     };
   };
-
-  # i3 Window Manager
-  #services.xserver = {
-  #  enable = true;
-
-  #  desktopManager = {
-  #    xterm.enable = false;
-  #    wallpaper.mode = "fill";
-  #  };
-
-  #  displayManager = {
-  #    defaultSession = "none+i3";
-  #  };
-
-  #  windowManager.i3 = {
-  #    enable = true;
-  #    extraPackages = with pkgs; [
-  #      dmenu
-  #      i3status
-  #      i3lock
-  #      i3blocks
-  #    ];
-  #  };
-  #};
 
   # Git
   programs.git.enable = true;
