@@ -179,6 +179,8 @@
     vintagestory
 
     tauon
+
+    pkgs_unstable.teamspeak6-client
   ];
 
   fonts = {
