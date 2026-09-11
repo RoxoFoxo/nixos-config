@@ -106,7 +106,7 @@
     insomnia
 
     neovim-full
-    pkgs_unstable.elixir
+    pkgs_unstable.beamPackages.elixir
     pkgs_unstable.elixir-ls
     pkgs_unstable.inotify-tools
     tree-sitter
