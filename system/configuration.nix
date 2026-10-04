@@ -126,8 +126,8 @@
     xclip
     gnumake
     vscode
-    pkgs_old.krita
-    #krita
+    #pkgs_old.krita
+    pkgs_unstable.krita
     openvpn
     zathura
     zip
