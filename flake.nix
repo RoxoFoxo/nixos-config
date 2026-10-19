@@ -1,7 +1,6 @@
 {
   inputs = {
     nixpkgs_stable.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nixpkgs_old_stable.url = "github:NixOS/nixpkgs/nixos-25.11"; #temp solution for krita
     nixpkgs_unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home_manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -16,7 +15,7 @@
     neovim.url = "github:shiryel/nvim";
   };
 
-  outputs = { self, nixpkgs_stable, nixpkgs_unstable, nixpkgs_old_stable, home_manager, ... }@inputs:
+  outputs = { self, nixpkgs_stable, nixpkgs_unstable, home_manager, ... }@inputs:
     let
       pkgs_unstable = import nixpkgs_unstable {
         system = "x86_64-linux";
@@ -26,16 +25,12 @@
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
-      pkgs_old = import nixpkgs_old_stable {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
       lib = nixpkgs_stable.lib;
     in
     {
       nixosConfigurations.desktop = lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = { inherit pkgs_unstable pkgs_old; };
+        specialArgs = { inherit pkgs_unstable; };
         lib = lib;
         modules = [
           ./system/configuration.nix
