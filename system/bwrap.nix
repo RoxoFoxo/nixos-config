@@ -202,7 +202,7 @@ in
             "$HOME/.config/MangoHud/MangoHud.conf"
             "$HOME/mnt/manjaro/home/roxo_foxo/.local/share/Steam/"
           ];
-          post_exec = ''-console "$@"''; # -silent
+          postExec = ''-console "$@"''; # -silent
           packages = f: p: with p; {
             steam = steam.override ({ extraLibraries ? pkgs': [ ], ... }: {
               #extraPkgs = pkgs: with pkgs; [ ];
