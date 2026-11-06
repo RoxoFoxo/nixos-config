@@ -40,7 +40,7 @@ in
         # discord
         {
           packages = f: p: with p; {
-            discord = p.discord-canary.override { nss = p.nss_latest; };
+            discord = p.krisp-discord; #.override { nss = p.nss_latest; };
           };
           dev = true;
           rwBinds = [ "$HOME" ];
