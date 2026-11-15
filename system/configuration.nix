@@ -118,20 +118,14 @@
     gcc
     ripgrep
     svelte-language-server
-    vscode-langservers-extracted
     nixpkgs-fmt
     nil
 
-    #rnix-lsp
     yt-dlp
     winetricks
-    #protontricks
-    #xorg.xkill
     chromium
     xclip
     gnumake
-    vscode
-    #pkgs_old.krita
     pkgs_unstable.krita
     openvpn
     zathura
